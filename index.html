@@ -1,0 +1,1062 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Haciendo comandos con Click!</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/docker.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          
+          <div>
+            <img src="media/imgs/click.png" style=" max-height: none; max-width: none;"/>
+            <br/>
+          </div>
+          <h3>Haciendo comandos con Click!</h3>
+          <p>
+            <small style="margin-top: 40px; font-size: 0.7em; font-weight: bold;"><a href="https://github.com/telemaco">roberto.majadas</a></small>
+            <a href="http://www.openshine.com"><img src="media/imgs/openshine.png"/></a>
+          </p>
+        </section>
+
+        <section >
+          <h1>¿Qué es un Click?</h1>
+          <h2 class="fragment" data-fragment-index="0"><u>C</u>ommand <u>L</u>ine <u>I</u>nterface <u>C</u>reation <u>K</u>it</h2>
+        </section>
+
+        <section>
+          <h1>¿Por qué Click?</h1>
+          <div style="position: absolute; left: 15%; top: 150px; width: 90%;" class="absolute-element">
+            <ul style="text-align: left; line-height=1.1em;">
+              <li class="fragment" data-fragment-index="0">Toltalmente anidable y componible</li>
+              <li class="fragment" data-fragment-index="1">Generación de páginas de ayuda</li>
+              <li class="fragment" data-fragment-index="2">"Lazy loading" de comandos en tiempo de ejecución</li>
+              <li class="fragment" data-fragment-index="3">Soporte para las convenciones de UNIX</li>
+              <li class="fragment" data-fragment-index="4">Carga de variables de entorno de serie</li>
+              <li class="fragment" data-fragment-index="5">Soporte para Python 2 y 3</li>
+              <li class="fragment" data-fragment-index="6">Gestión de descriptores de ficheros de serie</li>
+              <li class="fragment" data-fragment-index="7">Muchos, muchos helpers</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <h1>¿Y por qué no Argparse?</h1>
+          <div style="position: absolute; left: 15%; top: 150px; width: 90%;" class="absolute-element">
+            <ul style="text-align: left; line-height=1.1em;">
+              <li class="fragment" data-fragment-index="0">Click está basado en optparse</li>
+              <li class="fragment" data-fragment-index="1">Hace demasiada "magia" para saber que es un argumento o un parámetro</li>
+              <li class="fragment" data-fragment-index="2">Dificulta el anidamiento de comandos</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <h1>¿Y por qué no Docopt?</h1>
+          <div style="position: absolute; left: 15%; top: 150px; width: 90%;" class="absolute-element">
+            <ul style="text-align: left; line-height=1.1em;">
+              <li class="fragment" data-fragment-index="0">Su arquitectura persigue objetivos diferentes</li>
+              <ul style="text-align: left; line-height=1.1em;">
+                <li class="fragment" data-fragment-index="1">Dependiente de la ayuda que hagas</li>
+                <li class="fragment" data-fragment-index="2">Es difícil hacer composición de comandos</li>
+                <li class="fragment" data-fragment-index="3">Tiene soporte de subcomandos, pero...</li>
+              </ul>
+              <li class="fragment" data-fragment-index="4">Y click...</li>
+              <ul style="text-align: left; line-height=1.1em;">
+                <li class="fragment" data-fragment-index="5">No solo parsea, asigna el código apropiado</li>
+                <li class="fragment" data-fragment-index="6">Fuerte contexto de invocación (subcomando -> comando)</li>
+                <li class="fragment" data-fragment-index="7">Mucha info de todo</li>
+              </ul>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <h1>¿Y por qué no Docopt?</h1>
+          <h2>Click está orientado a tener un sistema componible y Docopt a tener el CLI más bonito hecho a mano.</h2>
+        </section>
+
+        <section>
+          <h1>Instalar Click</h1>
+          <pre>
+            <code class="bash" data-trim>
+virtualenv .venv
+source .venv/bin/activate
+pip install click
+            </code>
+          </pre>
+        </section>
+
+
+        <section>
+          <h1>Hello world!</h1>
+          <pre>
+            <code class="python" data-trim>
+#!/usr/bin/env python
+
+import click
+
+
+@click.command()
+def hello():
+    click.echo('Hello World!')
+
+
+if __name__ == '__main__':
+    hello()
+            </code>
+          </pre>
+          <pre>
+            <code class="bash" data-trim>
+./hello_world.py
+Hello World!
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h1>Anidando comandos</h1>
+          <pre>
+            <code class="python" data-trim>
+#!/usr/bin/env python
+import click
+
+@click.group()
+def cli():
+    pass
+
+@cli.command()
+def say_hello():
+    click.echo('Hello hacker!')
+
+@cli.command()
+def say_bye():
+    click.echo('Bye hacker!')
+
+
+if __name__ == '__main__':
+    cli()
+
+            </code>
+          </pre>
+        </section> 
+
+        <section>
+          <h1>Añadiendo parámetros</h1>
+          <pre>
+            <code class="python" data-trim>
+#!/usr/bin/env python
+import click
+
+@click.command()
+@click.option('--count-down', default=10, help='suprise countdown')
+@click.argument('name')
+def surprise(count_down, name):
+    while count_down != 0:
+        click.echo("%s..." % count_down)
+        count_down = count_down - 1
+
+    click.echo("Supriseeeeee!!!! %s" % name)
+
+if __name__ == '__main__':
+    surprise()
+
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h1>Integración con setuptools</h1>
+          <pre>
+            <code class="python" data-trim>
+from setuptools import setup
+
+setup(
+    name='yourscript',
+    version='0.1',
+    py_modules=['yourscript'],
+    install_requires=[
+        'Click',
+    ],
+    entry_points='''
+        [console_scripts]
+        yourscript=yourscript:cli
+    ''',
+)
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h1>Parámetros</h1>
+          <h2>Click soporta dos clases de parámetros: options y arguments</h2>
+          
+          <div style="position: absolute; left: 0%; top: 150px; width: 90%;" class="absolute-element">
+            <ul style="text-align: left; line-height=1.1em;">
+              <li class="fragment" data-fragment-index="0">Arguments</li>
+              <ul style="text-align: left; line-height=1.1em;">
+                <li class="fragment" data-fragment-index="1">mi_comando <b>NOMBRE</b></li>
+                <li class="fragment" data-fragment-index="2">Usar para nombres, ficheros, etc.</li>
+              </ul>
+              <li class="fragment" data-fragment-index="4">Options</li>
+              <ul style="text-align: left; line-height=1.1em;">
+                <li class="fragment" data-fragment-index="5">mi_comando <b>--help</b></li>
+                <li class="fragment" data-fragment-index="6">Totalmente documentados</li>
+                <li class="fragment" data-fragment-index="7">Si falta el dato, te lo pide</li>
+                <li class="fragment" data-fragment-index="8">Precarga por variables de entorno</li>
+              </ul>
+            </ul>
+          </div>
+        </section> 
+
+        <section>
+          <h1>Parámetros</h1>
+          <h2>Tipos de datos</h2>
+          
+          <div style="position: absolute; left: 15%; top: 150px; width: 90%;" class="absolute-element">
+            <ul style="text-align: left; line-height=1.1em;">
+              <li>str / click.STRING</li>
+              <li>int / click.INT</li>
+              <li>float / click.FLOAT</li>
+              <li>bool / click.BOOL</li>
+              <li>click.UUID, click.File, click.Path, click.Choice, click.IntRange</li>
+              <li>Tipos custom, muy faciles de implementar!</li>
+            </ul>
+          </div>
+        </section> 
+
+        <section>        
+          <div>
+            <img src="media/imgs/DontBlink.png" style=" max-height: none; max-width: none;"/>
+            <br/>
+          </div>
+        </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Una opción básica</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.option('--n', default=1)
+def dots(n):
+    click.echo('.' * n)
+          </code>
+        </pre>
+
+        <ul style="text-align: left; line-height=1.1em;">
+          <li>default, define el valor por defecto</li>
+          <li>Si no hay tipo de dato definido por defecto es String</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>opciones multi-valor</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.option('--pos', nargs=2, type=float)
+def findme(pos):
+    click.echo('%s / %s' % pos)
+          </code>
+        </pre>
+
+        <ul style="text-align: left; line-height=1.1em;">
+          <li>nargs, define numero de argumentos</li>
+          <li>type, define el tipo de dato que acepta</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Usando tuplas para opción multi-valor</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.option('--item', type=(unicode, int))
+def putitem(item):
+    click.echo('name=%s id=%d' % item)
+          </code>
+        </pre>
+
+        <ul style="text-align: left; line-height=1.1em;">
+          <li>2 entradas, un string unicode y un entero</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Multiples entradas de la misma opción</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.option('--message', '-m', multiple=True)
+def commit(message):
+    click.echo('\n'.join(message))
+          </code>
+        </pre>
+
+        <pre>
+          <code class="bash" data-trim>
+$ commit -m foo -m bar
+foo
+bar
+          </code>
+        </pre>     
+      </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Contador asociado a una opción</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.option('-v', '--verbose', count=True)
+def log(verbose):
+    click.echo('Verbosity: %s' % verbose)
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+$ log -vvv
+Verbosity: 3
+          </code>
+        </pre>    
+      </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Flags</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.option('--shout/--no-shout', default=False)
+def info(shout):
+    if shout:
+        click.echo('Eeeeeeeyyyyy!!!!!')
+    else:
+        click.echo('Ey')
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Switches</h2>
+        <pre>
+          <code class="python" data-trim>
+import sys
+
+@click.command()
+@click.option('--upper', 'transformation', flag_value='upper',
+              default=True)
+@click.option('--lower', 'transformation', flag_value='lower')
+def info(transformation):
+    click.echo(getattr(sys.platform, transformation)())
+          </code>
+        </pre>
+
+        <pre>
+          <code class="bash" data-trim>
+$ info --upper
+DARWIN
+$ info --lower
+darwin
+$ info
+DARWIN
+          </code>
+        </pre>  
+
+      </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Opción con multiples elecciones</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.option('--hash-type', type=click.Choice(['md5', 'sha1']))
+def digest(hash_type):
+    click.echo(hash_type)
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Prompting</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.option('--name', prompt=True)
+def hello(name):
+    click.echo('Hello %s!' % name)
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+$ hello --name=John
+Hello John!
+$ hello
+Name: John
+Hello John!
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Preguntando la password</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.password_option()
+def encrypt(password):
+    click.echo('Encrypting password to %s' % password.encode('rot13'))
+
+#
+# Asi seria sin el decorator @click.password_option()
+#
+# @click.command()
+# @click.option('--password', prompt=True, hide_input=True,
+#              confirmation_prompt=True)
+# def encrypt(password):
+#    click.echo('Encrypting password to %s' % password.encode('rot13'))
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+$ encrypt
+Password: 
+Repeat for confirmation: 
+Encrypting password to frperg
+          </code>
+        </pre>  
+      </section> 
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Recogiendo variables del environment</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.option('--username')
+def greet(username):
+    click.echo('Hello %s!' % username)
+
+if __name__ == '__main__':
+    greet(auto_envvar_prefix='GREETER')
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+$ export GREETER_USERNAME=john
+$ greet
+Hello john!
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Recogiendo variables del environment, alguna en particular</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.option('--username', envvar='USERNAME')
+def greet(username):
+    click.echo('Hello %s!' % username)
+
+if __name__ == '__main__':
+    greet()
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+$ export USERNAME=john
+$ greet
+Hello john!
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>Jugando con Options</h1>
+        <h2>Usando callbacks en las opciones</h2>
+        <pre>
+          <code class="python" data-trim>
+def validate_rolls(ctx, param, value):
+    try:
+        rolls, dice = map(int, value.split('d', 2))
+        return (dice, rolls)
+    except ValueError:
+        raise click.BadParameter('rolls need to be in format NdM')
+
+@click.command()
+@click.option('--rolls', callback=validate_rolls, default='1d6')
+def roll(rolls):
+    click.echo('Rolling a %d-sided dice %d time(s)' % rolls)
+
+if __name__ == '__main__':
+    roll()
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+roll --rolls=42
+Usage: roll [OPTIONS]
+
+Error: Invalid value for "--rolls": rolls need to be in format NdM
+
+$ roll --rolls=2d12
+Rolling a 12-sided dice 2 time(s)
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>¿Jugamos con los argumentos?</h1>
+      </section>
+
+      <section>
+        <h1>Jugando con argumentos</h1>
+        <h2>Lo básico!</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.argument('filename')
+def touch(filename):
+    click.echo(filename)
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+$ touch foo.txt
+foo.txt
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>Jugando con argumentos</h1>
+        <h2>Argumentos de número variable</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.argument('src', nargs=-1)
+@click.argument('dst', nargs=1)
+def copy(src, dst):
+    for fn in src:
+        click.echo('move %s to folder %s' % (fn, dst))
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+$ copy foo.txt bar.txt my_folder
+move foo.txt to folder my_folder
+move bar.txt to folder my_folder
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>Jugando con argumentos</h1>
+        <h2>Argumentos de número variable</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.argument('input', type=click.File('rb'))
+@click.argument('output', type=click.File('wb'))
+def inout(input, output):
+    while True:
+        chunk = input.read(1024)
+        if not chunk:
+            break
+        output.write(chunk)
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+$ inout - hello.txt
+hello
+^D
+$ inout hello.txt -
+hello
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>Jugando con argumentos</h1>
+        <h2>Argumentos con paths</h2>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.argument('f', type=click.Path(exists=True))
+def touch(f):
+    click.echo(click.format_filename(f))
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+$ touch hello.txt
+hello.txt
+
+$ touch missing.txt
+Usage: touch [OPTIONS] F
+
+Error: Invalid value for "f": Path "missing.txt" does not exist.
+          </code>
+        </pre>  
+      </section>
+      
+      <section>
+        <h1>¿Y ahora?</h1>
+        <div style="position: absolute; left: 10%; top: 150px; width: 90%;" class="absolute-element">
+          <ul style="text-align: left; line-height=1.1em;">
+            <li class="fragment" data-fragment-index="0">Documentación</li>
+            <li class="fragment" data-fragment-index="1">Entrada de usuario</li>
+            <li class="fragment" data-fragment-index="2">Utilidades</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h1>Documentación de comandos</h1>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+@click.argument('name')
+def say_hello(name):
+    """This script say hello to user NAME."""
+    click.echo('Hello %s!' % name)
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+$ say_hello --help
+Usage: say_hello [OPTIONS] NAME
+
+  This script say hello to user NAME.
+
+Options:
+  --help           Show this message and exit.
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>Documentación de comandos</h1>
+        <pre>
+          <code class="python" data-trim>
+@click.group()
+def cli():
+    """A simple command line tool."""
+
+@cli.command('init', short_help='init the repo')
+def init():
+    """Initializes the repository."""
+
+@cli.command('delete', short_help='delete the repo')
+def delete():
+    """Deletes the repository."""
+          </code>
+        </pre>
+        <pre>
+          <code class="bash" data-trim>
+$ repo.py
+Usage: repo.py [OPTIONS] COMMAND [ARGS]...
+
+  A simple command line tool.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  delete  delete the repo
+  init    init the repo
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>Entrada de usuarios</h1>
+        <pre>
+          <code class="python" data-trim>
+value = click.prompt('Please enter a valid integer', type=int)
+          </code>
+        </pre>
+
+        <pre>
+          <code class="python" data-trim>
+value = click.prompt('Please enter a number', default=42.0)
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Entrada de usuarios</h1>
+        <h3>(pedir confirmación de algo)</h3>
+        <pre>
+          <code class="python" data-trim>
+if click.confirm('Do you want to continue?'):
+    click.echo('Well done!')
+          </code>
+        </pre>
+
+        <pre>
+          <code class="python" data-trim>
+click.confirm('Do you want to continue?', abort=True)
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Utilidades</h1>
+        <h3>ANSI colorines!</h3>
+        <pre>
+          <code class="python" data-trim>
+import click
+
+click.echo('Hello World!')
+
+click.echo('Hello World!', err=True)
+
+click.secho('Hello World!', fg='green')
+click.secho('Some more text', bg='blue', fg='white')
+click.secho('ATTENTION', blink=True, bold=True)
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Utilidades</h1>
+        <h3>Paginación</h3>
+        <pre>
+          <code class="python" data-trim>
+@click.command()
+def less():
+    click.echo_via_pager('\n'.join('Line %d' % idx
+                                   for idx in range(200)))
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Utilidades</h1>
+        <h3>Lanzando editores</h3>
+        <pre>
+          <code class="python" data-trim>
+import click
+
+def get_commit_message():
+    MARKER = '# Everything below is ignored\n'
+    message = click.edit('\n\n' + MARKER)
+    if message is not None:
+        return message.split(MARKER, 1)[0].rstrip('\n')
+          </code>
+        </pre>
+
+        <pre>
+          <code class="python" data-trim>
+click.edit(filename='/etc/passwd')
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Otras utilidades</h1>
+        <div style="position: absolute; left: 10%; top: 150px; width: 90%;" class="absolute-element">
+          <ul style="text-align: left; line-height=1.1em;">
+            <li class="fragment" data-fragment-index="0">Lanzar aplicaciones</li>
+            <li class="fragment" data-fragment-index="1">Barras de progreso</li>
+            <li class="fragment" data-fragment-index="2">Click para continuar</li>
+            <li class="fragment" data-fragment-index="3">Apertura de ficheros inteligente</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h1>Comandos y grupos de comandos!</h1>
+        <h3>(ahora viene lo divertido)</h3>
+      </section>
+
+      <section>
+        <h1>Pasando contextos a comandos anidados!</h1>
+        <pre>
+          <code class="python" data-trim>
+@click.group()
+@click.option('--debug/--no-debug', default=False)
+@click.pass_context
+def cli(ctx, debug):
+    ctx.obj['DEBUG'] = debug
+
+@cli.command()
+@click.pass_context
+def sync(ctx):
+    click.echo('Debug is %s' % (ctx.obj['DEBUG'] and 'on' or 'off'))
+
+if __name__ == '__main__':
+    cli(obj={})
+          </code>
+        </pre>
+
+        <pre>
+          <code class="bash" data-trim>
+$ cmd --debug sync
+Debug is on
+$ cmd sync
+Debug is off
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>Hackeando un comando</h1>
+        <h3>(Ojo! mueve el ratón que hay mas código abajo ;-) )</h3>
+        <pre>
+          <code class="python" data-trim>
+import click
+import os
+
+plugin_folder = os.path.join(os.path.dirname(__file__), 'commands')
+
+class MyCLI(click.MultiCommand):
+
+    def list_commands(self, ctx):
+        rv = []
+        for filename in os.listdir(plugin_folder):
+            if filename.endswith('.py'):
+                rv.append(filename[:-3])
+        rv.sort()
+        return rv
+
+    def get_command(self, ctx, name):
+        ns = {}
+        fn = os.path.join(plugin_folder, name + '.py')
+        with open(fn) as f:
+            code = compile(f.read(), fn, 'exec')
+            eval(code, ns, ns)
+        return ns['cli']
+
+@click.command(cls=MyCLI)
+def cli():
+    pass
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Mezclando multiples grupos de comandos</h1>
+        <pre>
+          <code class="python" data-trim>
+import click
+
+@click.group()
+def cli1():
+    pass
+
+@cli1.command()
+def cmd1():
+    """Command on cli1"""
+
+@click.group()
+def cli2():
+    pass
+
+@cli2.command()
+def cmd2():
+    """Command on cli2"""
+
+cli = click.CommandCollection(sources=[cli1, cli2])
+
+if __name__ == '__main__':
+    cli()
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Encadenando multiples comandos</h1>
+        <pre>
+          <code class="python" data-trim>
+@click.group(chain=True)
+def cli():
+    pass
+
+
+@cli.command('sdist')
+def sdist():
+    click.echo('sdist called')
+
+
+@cli.command('bdist_wheel')
+def bdist_wheel():
+    click.echo('bdist_wheel called')
+          </code>
+        </pre>
+
+        <pre>
+          <code class="bash" data-trim>
+$ setup.py sdist bdist_wheel
+sdist called
+bdist_wheel called
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>Valores por defecto en contextos</h1>
+        <pre>
+          <code class="python" data-trim>
+import click
+
+CONTEXT_SETTINGS = dict(
+    default_map={'runserver': {'port': 5000}}
+)
+
+@click.group(context_settings=CONTEXT_SETTINGS)
+def cli():
+    pass
+
+@cli.command()
+@click.option('--port', default=8000)
+def runserver(port):
+    click.echo('Serving on http://127.0.0.1:%d/' % port)
+
+if __name__ == '__main__':
+    cli()
+          </code>
+        </pre>
+
+        <pre>
+          <code class="bash" data-trim>
+$ cli runserver
+Serving on http://127.0.0.1:5000/
+          </code>
+        </pre>  
+      </section>
+
+      <section>
+        <h1>Invocando otros comandos de un comando</h1>
+        <pre>
+          <code class="python" data-trim>
+cli = click.Group()
+
+@cli.command()
+@click.option('--count', default=1)
+def test(count):
+    click.echo('Count: %d' % count)
+
+@cli.command()
+@click.option('--count', default=1)
+@click.pass_context
+def dist(ctx, count):
+    ctx.forward(test)
+    ctx.invoke(test, count=42)
+          </code>
+        </pre>
+
+        <pre>
+          <code class="bash" data-trim>
+$ cli dist
+Count: 1
+Count: 42
+          </code>
+        </pre>  
+      </section>
+
+        <section>
+          <h1>¿Preguntas?</h1>
+        </section>
+
+        <section>
+          <h1>Gracias!<h1>
+          <div>
+            <img src="media/imgs/click.png" style="max-height: none; max-width: none;"/>
+            <br/>
+          </div>
+          <h3>Puedes consultar la presentación en esta URL</h3>
+          <p>
+            <a href="http://telemaco.github.io/python-click/">http://telemaco.github.io/python-click</a>
+          </p>
+          <a href="http://www.openshine.com"><img src="media/imgs/openshine.png"/></a>
+        </section>
+
+        <section>
+          <h1>Enlaces</h1>
+          <div style="position: absolute; left: 10%; top: 100px; width: 90%;" class="absolute-element">
+            <ul style="text-align: left; line-height=1.1em;">
+              <li><a href="http://click.pocoo.org/">Click</a></li>
+              <li><a href="http://www.openshine.com">Openshine</a></li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true },
+          { src: 'plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
