@@ -176,6 +176,23 @@ if __name__ == '__main__':
         </section> 
 
         <section>
+          <h1>Anidando comandos (resultado)</h1>
+          <pre>
+            <code class="bash" data-trim>
+$ anidando
+Usage: anidando [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  say_bye
+  say_hello
+            </code>
+          </pre>
+        </section> 
+
+        <section>
           <h1>Añadiendo parámetros</h1>
           <pre>
             <code class="python" data-trim>
@@ -194,6 +211,27 @@ def surprise(count_down, name):
 
 if __name__ == '__main__':
     surprise()
+
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h1>Añadiendo parámetros, resultado</h1>
+          <pre>
+            <code class="bash" data-trim>
+$ surprise --help
+Usage: surprise [OPTIONS] NAME
+
+Options:
+  --count-down INTEGER  suprise countdown
+  --help                Show this message and exit.
+
+$ surprise --count-down 3 roberto
+3...
+2...
+1...
+Supriseeeeee!!!! roberto
 
             </code>
           </pre>
